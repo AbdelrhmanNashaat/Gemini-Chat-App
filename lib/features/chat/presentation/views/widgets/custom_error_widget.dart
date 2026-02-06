@@ -27,10 +27,12 @@ class CustomErrorWidget extends StatelessWidget {
               size: 20,
             ),
             const SizedBox(width: 8),
-            Text(
-              errorMessage,
-              style: AppTextStyles.text13Bold.copyWith(
-                color: AppColors.whiteColor,
+            Flexible(
+              child: Text(
+                errorMessage,
+                style: AppTextStyles.text13Bold.copyWith(
+                  color: AppColors.whiteColor,
+                ),
               ),
             ),
           ],

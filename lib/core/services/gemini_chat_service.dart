@@ -3,7 +3,7 @@ import 'api_service.dart';
 class GeminiChatService {
   final String baseUrl =
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent';
-  final geminiApiKey = 'AIzaSyBh5nJHVr9-V0iy_TwHFj1h31ukyfQJYWk';
+  final geminiApiKey = 'AIzaSyBJctwBSW3u65Bq-VcVrh2LOdGankdqw8s';
   final ApiService apiService;
   GeminiChatService({required this.apiService});
   Future<dynamic> generateText({required String prompt}) async {
