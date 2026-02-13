@@ -5,13 +5,8 @@ import '../../manager/chat_cubit/chat_cubit.dart';
 import 'suffix_icons_row.dart';
 
 class ChatTextFiled extends StatelessWidget {
-  const ChatTextFiled({
-    super.key,
-    required this.controller,
-    required this.chatCubit,
-  });
+  const ChatTextFiled({super.key, required this.chatCubit});
 
-  final TextEditingController controller;
   final ChatCubit chatCubit;
 
   @override
@@ -34,7 +29,7 @@ class ChatTextFiled extends StatelessWidget {
         constraints: const BoxConstraints(minHeight: 40, maxHeight: 150),
         child: Scrollbar(
           child: TextFormField(
-            controller: controller,
+            controller: chatCubit.userMessage,
             style: AppTextStyles.text14Medium.copyWith(
               color: AppColors.textColor2,
             ),
@@ -45,7 +40,7 @@ class ChatTextFiled extends StatelessWidget {
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(16),
               suffixIcon: ValueListenableBuilder<TextEditingValue>(
-                valueListenable: controller,
+                valueListenable: chatCubit.userMessage,
                 builder: (context, value, child) {
                   return SuffixIconsRow(
                     hasQuestion: value.text.isNotEmpty,

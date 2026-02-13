@@ -1,58 +1,35 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../data/models/chat_model.dart';
-import '../../../data/repos/chat_repo.dart';
+import '../../../data/models/chat_message_model.dart';
+import '../../../domain/chat_repo.dart';
 import 'chat_state.dart';
-import 'package:flutter/widgets.dart';
 
 class ChatCubit extends Cubit<ChatState> {
-  ChatCubit({required this.chatRepo}) : super(const ChatCubitInitial());
+  ChatCubit({required this.chatRepo}) : super(ChatCubitInitial());
 
   final ChatRepo chatRepo;
-  final TextEditingController messageController = TextEditingController();
 
-  String _lastUserMessage = '';
+  final List<ChatMessageModel> _messages = [];
 
-  Future<void> sendQuestion({bool isRetry = false}) async {
-    final currentMessages = List<ChatModel>.from(state.messages);
-
-    // 1️⃣ Determine message
-    final userMessage = isRetry
-        ? _lastUserMessage
-        : messageController.text.trim();
-
-    if (userMessage.isEmpty) return;
-
-    if (!isRetry) {
-      _lastUserMessage = userMessage;
-      currentMessages.add(ChatModel(role: 'user', message: userMessage));
-      messageController.clear();
-    }
-
-    int botIndex = currentMessages.lastIndexWhere(
-      (m) => m.role == 'bot' && m.message.isEmpty,
+  List<ChatMessageModel> get messages => List.unmodifiable(_messages);
+  final userMessage = TextEditingController();
+  Future<void> sendQuestion() async {
+    _messages.add(
+      ChatMessageModel(message: userMessage.text.trim(), role: 'user'),
     );
 
-    if (botIndex == -1) {
-      currentMessages.add(ChatModel(role: 'bot', message: ''));
-      botIndex = currentMessages.length - 1;
-    }
+    emit(ChatCubitLoading());
 
-    emit(ChatCubitLoading(messages: currentMessages));
-
-    final response = await chatRepo.sendMessage(message: userMessage);
+    final response = await chatRepo.sendMessage(messages: _messages);
 
     response.fold(
       (failure) {
-        emit(
-          ChatCubitError(
-            messages: currentMessages,
-            errorMessage: failure.errorMessage,
-          ),
-        );
+        emit(ChatCubitError(errorMessage: failure.errorMessage));
       },
       (botMessage) {
-        currentMessages[botIndex] = ChatModel(role: 'bot', message: botMessage);
-        emit(ChatCubitSuccess(messages: currentMessages));
+        _messages.add(ChatMessageModel(message: botMessage, role: 'model'));
+
+        emit(ChatCubitSuccess());
       },
     );
   }

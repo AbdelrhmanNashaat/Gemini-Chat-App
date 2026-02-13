@@ -1,3 +1,4 @@
+import '../../features/chat/data/models/chat_message_model.dart';
 import 'api_service.dart';
 
 class GeminiChatService {
@@ -6,25 +7,30 @@ class GeminiChatService {
   final geminiApiKey = 'AIzaSyBJctwBSW3u65Bq-VcVrh2LOdGankdqw8s';
   final ApiService apiService;
   GeminiChatService({required this.apiService});
-  Future<dynamic> generateText({required String prompt}) async {
+  Future<String> generateText({
+    required List<ChatMessageModel> messages,
+  }) async {
     final headers = {
       'x-goog-api-key': geminiApiKey,
       'Content-Type': 'application/json',
     };
-    final message = {
-      'contents': [
-        {
+    final body = {
+      'contents': messages.map((msg) {
+        return {
+          'role': msg.role,
           'parts': [
-            {'text': prompt},
+            {'text': msg.message},
           ],
-        },
-      ],
+        };
+      }).toList(),
     };
+
     final response = await apiService.post(
       headers: headers,
-      data: message,
+      data: body,
       baseUrl: baseUrl,
     );
-    return response['candidates'][0]['content']['parts'][0]['text'];
+    final botMessage = response['candidates'][0]['content']['parts'][0]['text'];
+    return botMessage;
   }
 }

@@ -1,6 +1,6 @@
 import 'package:chat_bot_gemini/core/services/api_service.dart';
 import 'package:chat_bot_gemini/core/services/gemini_chat_service.dart';
-import 'package:chat_bot_gemini/features/chat/data/repos/chat_repo_impl.dart';
+import 'package:chat_bot_gemini/features/chat/data/repos/gemini_chat_repo_impl.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +17,7 @@ class ChatView extends StatelessWidget {
       body: SafeArea(
         child: BlocProvider(
           create: (context) => ChatCubit(
-            chatRepo: ChatRepoImpl(
+            chatRepo: GeminiChatRepoImpl(
               geminiChatService: GeminiChatService(
                 apiService: ApiService(dio: Dio()),
               ),

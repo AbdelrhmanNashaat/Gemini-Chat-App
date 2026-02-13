@@ -37,31 +37,31 @@ class CustomErrorWidget extends StatelessWidget {
             ),
           ],
         ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.whiteColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            onPressed: () {
-              chatCubit.sendQuestion(isRetry: true);
-            },
-            label: Text(
-              'Retry',
-              style: AppTextStyles.text14Bold.copyWith(
-                color: AppColors.primaryColor,
-              ),
-            ),
-            icon: const Icon(
-              Icons.refresh,
-              color: AppColors.primaryColor,
-              size: 20,
-            ),
-          ),
-        ),
+        // Align(
+        //   alignment: Alignment.centerRight,
+        //   child: ElevatedButton.icon(
+        //     style: ElevatedButton.styleFrom(
+        //       backgroundColor: AppColors.whiteColor,
+        //       shape: RoundedRectangleBorder(
+        //         borderRadius: BorderRadius.circular(8),
+        //       ),
+        //     ),
+        //     onPressed: () {
+        //       chatCubit.sendQuestion(isRetry: true);
+        //     },
+        //     label: Text(
+        //       'Retry',
+        //       style: AppTextStyles.text14Bold.copyWith(
+        //         color: AppColors.primaryColor,
+        //       ),
+        //     ),
+        //     icon: const Icon(
+        //       Icons.refresh,
+        //       color: AppColors.primaryColor,
+        //       size: 20,
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

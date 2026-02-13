@@ -1,6 +1,6 @@
 import 'package:chat_bot_gemini/features/chat/presentation/views/widgets/chat_item.dart';
 import 'package:flutter/material.dart';
-import '../../../data/models/chat_model.dart';
+import '../../../data/models/chat_message_model.dart';
 import '../../manager/chat_cubit/chat_cubit.dart';
 
 class ChatListWidget extends StatelessWidget {
@@ -12,7 +12,7 @@ class ChatListWidget extends StatelessWidget {
     required this.chatCubit,
   });
 
-  final List<ChatModel> messages;
+  final List<ChatMessageModel> messages;
   final bool isLoading;
   final String errorMessage;
   final ChatCubit chatCubit;

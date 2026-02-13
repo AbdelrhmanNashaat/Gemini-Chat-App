@@ -1,10 +1,10 @@
 import 'package:chat_bot_gemini/core/utils/assets.dart';
-import 'package:chat_bot_gemini/features/chat/data/models/chat_model.dart';
 import 'package:chat_bot_gemini/features/chat/presentation/manager/chat_cubit/chat_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_text_styles.dart';
+import '../../../data/models/chat_message_model.dart';
 import 'custom_error_widget.dart';
 
 class ChatItem extends StatelessWidget {
@@ -16,7 +16,7 @@ class ChatItem extends StatelessWidget {
     this.errorMessage = '',
   });
 
-  final ChatModel chatModel;
+  final ChatMessageModel chatModel;
   final bool isLoading;
   final String errorMessage;
   final ChatCubit chatCubit;
