@@ -49,7 +49,7 @@ class _InitialListOfQuestionsState extends State<InitialListOfQuestions> {
             setState(() {
               selectedQuestion = question;
             });
-            widget.chatCubit.userMessage.text = question;
+            widget.chatCubit.messageController.text = question;
           },
         );
       }, childCount: items.length),

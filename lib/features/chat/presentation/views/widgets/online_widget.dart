@@ -11,7 +11,7 @@ class CheckInternetAvailabilityWidget extends StatelessWidget {
     return Row(
       children: [
         CircleAvatar(
-          radius: 3.5,
+          radius: 3,
           backgroundColor: isOnline
               ? AppColors.onlineColor
               : AppColors.errorColor,
@@ -19,7 +19,7 @@ class CheckInternetAvailabilityWidget extends StatelessWidget {
         const SizedBox(width: 4),
         Text(
           isOnline ? 'Online' : 'Offline',
-          style: AppTextStyles.text17Medium.copyWith(
+          style: AppTextStyles.text15Medium.copyWith(
             color: isOnline ? AppColors.onlineColor : AppColors.errorColor,
           ),
         ),

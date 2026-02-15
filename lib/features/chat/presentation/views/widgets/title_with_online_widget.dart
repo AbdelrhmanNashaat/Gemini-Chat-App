@@ -14,8 +14,9 @@ class TitleWithOnlineWidget extends StatelessWidget {
       children: [
         Text(
           'ChatGPT',
-          style: AppTextStyles.text20Bold.copyWith(
+          style: AppTextStyles.text19Bold.copyWith(
             color: AppColors.primaryColor,
+            fontSize: 18,
           ),
         ),
         CheckInternetAvailabilityWidget(isOnline: isOnline),

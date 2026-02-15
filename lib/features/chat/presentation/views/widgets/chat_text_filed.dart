@@ -29,7 +29,7 @@ class ChatTextFiled extends StatelessWidget {
         constraints: const BoxConstraints(minHeight: 40, maxHeight: 150),
         child: Scrollbar(
           child: TextFormField(
-            controller: chatCubit.userMessage,
+            controller: chatCubit.messageController,
             style: AppTextStyles.text14Medium.copyWith(
               color: AppColors.textColor2,
             ),
@@ -40,7 +40,7 @@ class ChatTextFiled extends StatelessWidget {
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(16),
               suffixIcon: ValueListenableBuilder<TextEditingValue>(
-                valueListenable: chatCubit.userMessage,
+                valueListenable: chatCubit.messageController,
                 builder: (context, value, child) {
                   return SuffixIconsRow(
                     hasQuestion: value.text.isNotEmpty,

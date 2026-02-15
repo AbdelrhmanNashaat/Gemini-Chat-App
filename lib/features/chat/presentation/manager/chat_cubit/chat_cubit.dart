@@ -1,35 +1,43 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/widgets.dart';
 import '../../../data/models/chat_message_model.dart';
 import '../../../domain/chat_repo.dart';
 import 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
-  ChatCubit({required this.chatRepo}) : super(ChatCubitInitial());
+  ChatCubit({required this.chatRepo}) : super(const ChatCubitInitial());
 
   final ChatRepo chatRepo;
+  final TextEditingController messageController = TextEditingController();
 
-  final List<ChatMessageModel> _messages = [];
+  final List<ChatMessageModel> messages = [];
 
-  List<ChatMessageModel> get messages => List.unmodifiable(_messages);
-  final userMessage = TextEditingController();
   Future<void> sendQuestion() async {
-    _messages.add(
-      ChatMessageModel(message: userMessage.text.trim(), role: 'user'),
-    );
+    final userMessage = messageController.text.trim();
+    if (userMessage.isEmpty) return;
 
-    emit(ChatCubitLoading());
+    messages.add(ChatMessageModel(role: 'user', message: userMessage));
+    messageController.clear();
 
-    final response = await chatRepo.sendMessage(messages: _messages);
+    messages.add(ChatMessageModel(role: 'bot', message: ''));
+    final botIndex = messages.length - 1;
+
+    emit(ChatCubitLoading(messages: List<ChatMessageModel>.from(messages)));
+
+    final response = await chatRepo.sendMessage(messages: messages);
 
     response.fold(
       (failure) {
-        emit(ChatCubitError(errorMessage: failure.errorMessage));
+        emit(
+          ChatCubitError(
+            messages: List<ChatMessageModel>.from(messages),
+            errorMessage: failure.errorMessage,
+          ),
+        );
       },
       (botMessage) {
-        _messages.add(ChatMessageModel(message: botMessage, role: 'model'));
-
-        emit(ChatCubitSuccess());
+        messages[botIndex] = ChatMessageModel(role: 'bot', message: botMessage);
+        emit(ChatCubitSuccess(messages: List<ChatMessageModel>.from(messages)));
       },
     );
   }

@@ -1,11 +1,10 @@
-import 'package:chat_bot_gemini/core/utils/assets.dart';
 import 'package:chat_bot_gemini/features/chat/presentation/manager/chat_cubit/chat_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_text_styles.dart';
 import '../../../data/models/chat_message_model.dart';
 import 'custom_error_widget.dart';
+import 'loading_widget.dart';
 
 class ChatItem extends StatelessWidget {
   const ChatItem({
@@ -43,57 +42,55 @@ class ChatItem extends StatelessWidget {
           ? MainAxisAlignment.end
           : MainAxisAlignment.start,
       children: [
-        if (!isUser) Image.asset(Assets.assetsImagesRobot),
-        SizedBox(width: isUser ? 0 : 8),
-        Container(
-          constraints: isLoading ? null : const BoxConstraints(maxWidth: 345),
-          padding: isLoading
-              ? const EdgeInsets.symmetric(horizontal: 12, vertical: 8)
-              : const EdgeInsets.all(16),
-          margin: const EdgeInsets.only(bottom: 12),
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(radius),
-              topRight: Radius.circular(isUser ? 0 : radius),
-              bottomLeft: Radius.circular(isUser ? radius : 0),
-              bottomRight: const Radius.circular(radius),
+        if (!isUser)
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Center(
+              child: Icon(
+                Icons.smart_toy,
+                color: AppColors.whiteColor,
+                size: 20,
+              ),
             ),
           ),
-          child: isLoading
-              ? const CustomLoadingWidget()
-              : hasError
-              ? CustomErrorWidget(
-                  errorMessage: errorMessage,
-                  chatCubit: chatCubit,
-                )
-              : Text(
-                  chatModel.message,
-                  style: AppTextStyles.text13Bold.copyWith(
-                    color: textColor,
-                    fontWeight: isUser ? FontWeight.bold : FontWeight.w500,
+        SizedBox(width: isUser ? 0 : 4),
+        Flexible(
+          child: Container(
+            width: isLoading ? 60 : null,
+            padding: isLoading
+                ? const EdgeInsets.symmetric(horizontal: 12, vertical: 8)
+                : const EdgeInsets.all(16),
+            margin: const EdgeInsets.only(bottom: 12),
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(radius),
+                topRight: Radius.circular(isUser ? 0 : radius),
+                bottomLeft: Radius.circular(isUser ? radius : 0),
+                bottomRight: const Radius.circular(radius),
+              ),
+            ),
+            child: isLoading
+                ? const CustomLoadingWidget()
+                : hasError
+                ? CustomErrorWidget(
+                    errorMessage: errorMessage,
+                    chatCubit: chatCubit,
+                  )
+                : Text(
+                    chatModel.message,
+                    style: AppTextStyles.text13Bold.copyWith(
+                      color: textColor,
+                      fontWeight: isUser ? FontWeight.bold : FontWeight.w500,
+                    ),
                   ),
-                ),
+          ),
         ),
       ],
-    );
-  }
-}
-
-class CustomLoadingWidget extends StatelessWidget {
-  const CustomLoadingWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox(
-      height: 24,
-      child: Center(
-        child: LoadingIndicator(
-          indicatorType: Indicator.ballPulse,
-          colors: [AppColors.primaryColor],
-          strokeWidth: 3,
-        ),
-      ),
     );
   }
 }
