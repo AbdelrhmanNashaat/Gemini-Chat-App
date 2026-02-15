@@ -25,7 +25,7 @@ class ChatListWidget extends StatelessWidget {
       itemCount: reversedMessages.length,
       itemBuilder: (context, index) {
         final chat = reversedMessages[index];
-        final isLatestMessage = index == 0 && chat.role == 'bot';
+        final isLatestMessage = index == 0 && chat.role == 'model';
         return ChatItem(
           chatModel: chat,
           isLoading: isLoading && isLatestMessage,

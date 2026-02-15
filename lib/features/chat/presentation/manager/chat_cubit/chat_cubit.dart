@@ -19,7 +19,7 @@ class ChatCubit extends Cubit<ChatState> {
     messages.add(ChatMessageModel(role: 'user', message: userMessage));
     messageController.clear();
 
-    messages.add(ChatMessageModel(role: 'bot', message: ''));
+    messages.add(ChatMessageModel(role: 'model', message: ''));
     final botIndex = messages.length - 1;
 
     emit(ChatCubitLoading(messages: List<ChatMessageModel>.from(messages)));
@@ -36,7 +36,10 @@ class ChatCubit extends Cubit<ChatState> {
         );
       },
       (botMessage) {
-        messages[botIndex] = ChatMessageModel(role: 'bot', message: botMessage);
+        messages[botIndex] = ChatMessageModel(
+          role: 'model',
+          message: botMessage,
+        );
         emit(ChatCubitSuccess(messages: List<ChatMessageModel>.from(messages)));
       },
     );

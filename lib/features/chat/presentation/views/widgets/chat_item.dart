@@ -1,5 +1,6 @@
 import 'package:chat_bot_gemini/features/chat/presentation/manager/chat_cubit/chat_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_text_styles.dart';
 import '../../../data/models/chat_message_model.dart';
@@ -81,11 +82,16 @@ class ChatItem extends StatelessWidget {
                     errorMessage: errorMessage,
                     chatCubit: chatCubit,
                   )
-                : Text(
-                    chatModel.message,
-                    style: AppTextStyles.text13Bold.copyWith(
-                      color: textColor,
-                      fontWeight: isUser ? FontWeight.bold : FontWeight.w500,
+                : GestureDetector(
+                    onLongPress: () {
+                      const ClipboardData(text: 'Copied Message');
+                    },
+                    child: Text(
+                      chatModel.message,
+                      style: AppTextStyles.text13Bold.copyWith(
+                        color: textColor,
+                        fontWeight: isUser ? FontWeight.bold : FontWeight.w500,
+                      ),
                     ),
                   ),
           ),
