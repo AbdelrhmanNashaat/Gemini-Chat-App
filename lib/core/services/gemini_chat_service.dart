@@ -52,15 +52,12 @@ class GeminiChatService {
       if (nonRetryStatusCodes.contains(statusCode)) {
         return '';
       }
-
       if (retryableStatusCodes.contains(statusCode)) {
         if (i == 2) return '';
         continue;
       }
-
       return '';
     }
-
     return '';
   }
 }

@@ -14,8 +14,32 @@ class GeminiChatRepoImpl extends ChatRepo {
     required List<ChatMessageModel> messages,
   }) async {
     try {
+      if (messages.isEmpty) {
+        return const Left(
+          ServerFailure(errorMessage: 'Messages list is empty'),
+        );
+      }
+
+      if (messages.any(
+        (m) =>
+            m.message.trim().isEmpty ||
+            m.role.trim().isEmpty ||
+            (m.role != 'user' && m.role != 'model'),
+      )) {
+        return const Left(
+          ServerFailure(
+            errorMessage:
+                'Each message must have a valid role and non-empty text',
+          ),
+        );
+      }
       final response = await geminiChatService.generateText(messages: messages);
-      log('response: $response');
+      if (response.trim().isEmpty) {
+        return const Left(
+          ServerFailure(errorMessage: 'Received empty response from service'),
+        );
+      }
+
       return Right(response);
     } catch (ex) {
       if (ex is DioException) {
