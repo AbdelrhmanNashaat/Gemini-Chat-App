@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import '../../features/chat/data/models/chat_message_model.dart';
+import '../../features/chat/data/models/gemini_request_model.dart';
 import '../../features/chat/data/models/gemini_response_model.dart';
 import 'api_service.dart';
 
@@ -6,10 +8,15 @@ class GeminiChatService {
   final String _baseUrl =
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
-  final String _geminiApiKey = 'YOUR_API_KEY';
+  //TODO : GET API KEY FROM ENVIRONMENT VARIABLES
+  final String _geminiApiKey = '';
   final ApiService apiService;
-
   GeminiChatService({required this.apiService});
+
+  Map<String, String> get _headers => {
+    'x-goog-api-key': _geminiApiKey,
+    'Content-Type': 'application/json',
+  };
 
   Future<GeminiResponseModel> generateText({
     required List<ChatMessageModel> messages,
@@ -18,24 +25,36 @@ class GeminiChatService {
   }
 
   Future<GeminiResponseModel> _callApi(List<ChatMessageModel> messages) async {
-    final response = await apiService.post(
-      baseUrl: _baseUrl,
-      headers: {
-        'x-goog-api-key': _geminiApiKey,
-        'Content-Type': 'application/json',
-      },
-      data: {
-        'contents': messages.map((m) {
-          return {
-            'role': m.role,
-            'parts': [
-              {'text': m.message},
-            ],
-          };
-        }).toList(),
-      },
-    );
+    const maxRetries = 3;
+    final request = GeminiRequestModel(messages: messages);
 
-    return GeminiResponseModel.fromJson(response);
+    for (int attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        final response = await apiService.post(
+          baseUrl: _baseUrl,
+          headers: _headers,
+          data: request.toJson(),
+        );
+
+        return GeminiResponseModel.fromJson(response);
+      } on DioException catch (e) {
+        final isLastAttempt = attempt == maxRetries - 1;
+
+        if (!_shouldRetry(e) || isLastAttempt) {
+          rethrow;
+        }
+
+        await Future.delayed(Duration(milliseconds: 500 * (attempt + 1)));
+      }
+    }
+
+    throw StateError('Retry loop exited unexpectedly');
+  }
+
+  bool _shouldRetry(DioException e) {
+    return e.type == DioExceptionType.connectionTimeout ||
+        e.type == DioExceptionType.sendTimeout ||
+        e.type == DioExceptionType.receiveTimeout ||
+        e.type == DioExceptionType.connectionError;
   }
 }
