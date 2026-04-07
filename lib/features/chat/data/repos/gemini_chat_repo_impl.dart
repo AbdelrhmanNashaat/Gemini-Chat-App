@@ -14,17 +14,10 @@ class GeminiChatRepoImpl extends ChatRepo {
   Future<Either<Failure, String>> sendMessage({
     required List<ChatMessageModel> messages,
   }) async {
-    final validationError = _validate(messages);
-    if (validationError != null) return Left(validationError);
-
     try {
       final response = await geminiChatService.generateText(messages: messages);
-      if (response.trim().isEmpty) {
-        return const Left(
-          ServerFailure(errorMessage: 'Received empty response from service'),
-        );
-      }
-      return Right(response);
+
+      return Right(response.text.trim());
     } on ServerFailure catch (failure) {
       log('[ChatRepo] ServerFailure: ${failure.errorMessage}');
       return Left(failure);
@@ -35,23 +28,5 @@ class GeminiChatRepoImpl extends ChatRepo {
       log('[ChatRepo] Unexpected: $e');
       return Left(ServerFailure(errorMessage: e.toString()));
     }
-  }
-
-  ServerFailure? _validate(List<ChatMessageModel> messages) {
-    if (messages.isEmpty) {
-      return const ServerFailure(errorMessage: 'Messages list is empty');
-    }
-    final invalid = messages.any(
-      (m) =>
-          m.message.trim().isEmpty ||
-          m.role.trim().isEmpty ||
-          (m.role != 'user' && m.role != 'model'),
-    );
-    if (invalid) {
-      return const ServerFailure(
-        errorMessage: 'Each message must have a valid role and non-empty text',
-      );
-    }
-    return null;
   }
 }
