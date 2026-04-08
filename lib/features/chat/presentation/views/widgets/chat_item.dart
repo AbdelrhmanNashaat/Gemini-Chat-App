@@ -80,7 +80,7 @@ class ChatItem extends StatelessWidget {
                 : hasError
                 ? CustomErrorWidget(
                     errorMessage: errorMessage,
-                    chatCubit: chatCubit,
+                    onResend: () => chatCubit.resendLastQuestion(),
                   )
                 : GestureDetector(
                     onLongPress: () {
