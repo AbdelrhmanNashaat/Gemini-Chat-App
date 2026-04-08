@@ -8,8 +8,7 @@ class GeminiChatService {
   final String _baseUrl =
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
-  //TODO : GET API KEY FROM ENVIRONMENT VARIABLES
-  final String _geminiApiKey = '';
+  final String _geminiApiKey = 'AIzaSyB3sNYcGJcZeduB6WRrKj7wmrKBJ2eVZL8';
   final ApiService apiService;
   GeminiChatService({required this.apiService});
 

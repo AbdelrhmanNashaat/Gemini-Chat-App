@@ -36,6 +36,7 @@ class ChatItem extends StatelessWidget {
     final bool hasError = errorMessage.isNotEmpty;
 
     return Row(
+      key: ValueKey(chatModel.message),
       crossAxisAlignment: isUser
           ? CrossAxisAlignment.end
           : CrossAxisAlignment.start,

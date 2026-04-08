@@ -24,6 +24,7 @@ class SuffixIconsRow extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           ClickableImage(
+            key: const Key('send_message_button'),
             imagePath: Assets.assetsImagesSendMessageArrowSvg,
             onTap: () {
               if (hasQuestion) {

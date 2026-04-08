@@ -18,52 +18,69 @@ class CustomErrorWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Something went wrong',
-          style: AppTextStyles.text14Bold.copyWith(color: AppColors.whiteColor),
-        ),
-        const SizedBox(height: 8),
+        // ── Header row: icon + title ──────────────────────────────
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Icon(
-              Icons.error_outline,
-              color: AppColors.whiteColor,
-              size: 20,
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: AppColors.whiteColor.withValues(alpha: .18),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.error_outline_rounded,
+                color: AppColors.whiteColor,
+                size: 16,
+              ),
             ),
             const SizedBox(width: 8),
-            Flexible(
-              child: Text(
-                errorMessage,
-                style: AppTextStyles.text13Bold.copyWith(
-                  color: AppColors.whiteColor.withValues(alpha: .92),
-                  fontWeight: FontWeight.w600,
-                ),
+            Text(
+              'Something went wrong',
+              style: AppTextStyles.text14Bold.copyWith(
+                color: AppColors.whiteColor,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 12),
-        TextButton.icon(
-          onPressed: onResend,
-          style: TextButton.styleFrom(
-            foregroundColor: AppColors.whiteColor,
-            backgroundColor: AppColors.whiteColor.withValues(alpha: .16),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            minimumSize: Size.zero,
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+
+        const SizedBox(height: 8),
+
+        // ── Error detail message ──────────────────────────────────
+        Text(
+          errorMessage,
+          style: AppTextStyles.text13Bold.copyWith(
+            color: AppColors.whiteColor.withValues(alpha: .85),
+            fontWeight: FontWeight.w500,
+            height: 1.4,
+          ),
+        ),
+
+        const SizedBox(height: 14),
+
+        // ── Resend button ─────────────────────────────────────────
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            key: const Key('resend_button'),
+            onPressed: onResend,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.whiteColor,
               side: BorderSide(
-                color: AppColors.whiteColor.withValues(alpha: .24),
+                color: AppColors.whiteColor.withValues(alpha: .5),
+                width: 1.2,
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
               ),
             ),
-          ),
-          icon: const Icon(Icons.refresh_rounded, size: 18),
-          label: Text(
-            'Resend',
-            style: AppTextStyles.text13Bold.copyWith(
-              color: AppColors.whiteColor,
+            icon: const Icon(Icons.refresh_rounded, size: 17),
+            label: Text(
+              'Try again',
+              style: AppTextStyles.text13Bold.copyWith(
+                color: AppColors.whiteColor,
+                letterSpacing: .3,
+              ),
             ),
           ),
         ),
