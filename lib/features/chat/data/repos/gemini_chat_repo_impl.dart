@@ -18,6 +18,7 @@ class GeminiChatRepoImpl extends ChatRepo with ChatServiceValidationMixin {
     try {
       validateInputMessages(messages);
       final response = await geminiChatService.generateText(messages: messages);
+      validateOutputText(response.text);
       return Right(response.text.trim());
     } on ServerFailure catch (failure) {
       log('[ChatRepo] ServerFailure: ${failure.errorMessage}');

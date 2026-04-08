@@ -36,7 +36,7 @@ class CustomErrorWidget extends StatelessWidget {
               child: Text(
                 errorMessage,
                 style: AppTextStyles.text13Bold.copyWith(
-                  color: AppColors.whiteColor.withOpacity(.92),
+                  color: AppColors.whiteColor.withValues(alpha: .92),
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -48,13 +48,15 @@ class CustomErrorWidget extends StatelessWidget {
           onPressed: onResend,
           style: TextButton.styleFrom(
             foregroundColor: AppColors.whiteColor,
-            backgroundColor: AppColors.whiteColor.withOpacity(.16),
+            backgroundColor: AppColors.whiteColor.withValues(alpha: .16),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             minimumSize: Size.zero,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
-              side: BorderSide(color: AppColors.whiteColor.withOpacity(.24)),
+              side: BorderSide(
+                color: AppColors.whiteColor.withValues(alpha: .24),
+              ),
             ),
           ),
           icon: const Icon(Icons.refresh_rounded, size: 18),
