@@ -18,7 +18,7 @@
 //     counts.
 //   • captureAny — captures the actual argument passed to a mock so we can
 //     inspect it after the call.
-//   • for-loop parametrisation — each DioExceptionType that belongs to the
+//   • for-loop parametrization — each DioExceptionType that belongs to the
 //     same category is tested with the same logic without copy-pasting code.
 // -----------------------------------------------------------------------------
 
@@ -131,7 +131,7 @@ void main() {
     // It verifies three things:
     //   • The correct Gemini endpoint URL is used.
     //   • The x-goog-api-key and Content-Type headers are present.
-    //   • The message list is serialised into the 'contents' structure that
+    //   • The message list is serialized into the 'contents' structure that
     //     the Gemini API requires.
 
     test('sends the expected endpoint, headers, and request body', () async {
